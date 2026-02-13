@@ -19,7 +19,7 @@ var entradaDeDados = readline.createInterface({
 // INÍCIO DA COLETA DE DADOS (CALLBACKS ANINHADOS)
 // Cada pergunta só acontece depois que a anterior é respondida
 entradaDeDados.question("Digite seu nome: ", function(nome) {
-    let nomeCliente = nome;
+    let nomeCliente = nome
 
     // Validação: Verifica se o nome é um número ou está vazio
     if (!isNaN(nomeCliente) || nomeCliente == "") {
