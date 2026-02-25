@@ -1,36 +1,27 @@
-function validarOperacao(operacao){
-    
-    let operacaoEscolhida = operacao
-    
-    operacao = operacao.toLowerCase()
+function validarOperacao(operacao) {
+    let op = operacao.toLowerCase()
 
-    if(operacao !== "soma" && operacao !== "subtração" && operacao !== "multiplicação"
-         && operacao !== "divisão" || !isNaN(operacao) || operacao == "") {
-
-        console.log("ERRO: Digite uma operação válida: ")
-        process.exit() 
+    if (op !== "soma" && op !== "subtração" && op !== "multiplicação"
+        && op !== "divisão" || !isNaN(op) || op == "") {
+        console.log("ERRO: Operação inválida.")
+        return false
     }
+    
+    return true
+}
 
-}    
-
-function validarValores(valor) { 
-
+function validarValores(valor) {
     let valorParaVerificar = valor.replace(",", ".")
 
     if (valor == "" || isNaN(valorParaVerificar)) {
-        console.log("ERRO: Digite um número válido.")
-        process.exit()
+        console.log("ERRO: Valor numérico inválido.")
+        return false
     }
     
-    if (valor == 0) {
-        console.log("ERRO: Não é possível dividir por zero.")
-        process.exit()
-    }
-    
+    return true
 }
-    
-    
+
 module.exports = {
     validarOperacao,
     validarValores
-}
+};
