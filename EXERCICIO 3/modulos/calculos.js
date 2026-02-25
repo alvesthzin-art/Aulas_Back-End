@@ -1,8 +1,8 @@
 function calcularOperacao(operacao, v1, v2) {
     let resultado
     let op = operacao.toLowerCase()
-    v1 = Number(v1.replace(",", "."))
-    v2 = Number(v2.replace(",", "."))
+    v1 = Number(String(v1).replace(",", "."))
+    v2 = Number(String(v2).replace(",", "."))
 
     if (op === "soma") {
         resultado = v1 + v2
@@ -23,4 +23,5 @@ function calcularOperacao(operacao, v1, v2) {
 
 module.exports = {
     calcularOperacao
-};
+    
+}
