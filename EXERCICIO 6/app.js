@@ -4,8 +4,7 @@
  * Autor: Thiago 
  *****************************************************************/
 var readline = require("readline")
-let gerarTabuada = require("./modulos/tabuada")
-let validarDados = require("./modulos/tabuada")
+const { gerarTabuada, validarDados } = require("./modulos/tabuada")
 
 var entradaDeDados = readline.createInterface({
     input: process.stdin,
@@ -13,27 +12,19 @@ var entradaDeDados = readline.createInterface({
 })  
 
 entradaDeDados.question("Digite a tabuada inicial: ", function(tabuadaInicial){
-    let tInicial = tabuadaInicial
-
     entradaDeDados.question("Digite a tabuada final: ", function(tabuadaFinal){
-        let tFinal = tabuadaFinal
-
         entradaDeDados.question("Digite o numero inicial: ", function(numeroInicial){
-            let nI = numeroInicial
-
             entradaDeDados.question("Digite o numero final: ", function(numeroFinal){
-                let nF = numeroFinal
+                
+                // Chamada da função de validação
+                // Passamos os valores para validar se estão vazios primeiro
+                let dadosValidos = validarDados(tabuadaInicial, tabuadaFinal, numeroInicial, numeroFinal)
 
-                let dadosValidos = validarDados(Number(tInicial), Number(tFinal), Number(nI), Number(nF))
-
-                if (validarDados){
-                    gerarTabuada(Number(tInicial), Number(tFinal), Number(nI), Number(nF))
+                if (dadosValidos) {
+                    gerarTabuada(tabuadaInicial, tabuadaFinal, numeroInicial, numeroFinal)
                 }
 
-                gerarTabuada(Number(tInicial), Number(tFinal), Number(nI), Number(nF))
-
                 entradaDeDados.close()
-
             })
         })
     })
