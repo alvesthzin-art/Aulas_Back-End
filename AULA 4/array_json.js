@@ -33,7 +33,7 @@
 */
 
 //Formas de criar um ARRAY
-const listaDeNomes  =   ["José", "Maria", "João", "André", "Alex"]
+const listaDeNomes  =   ["José", "Maria", "João", "André", "Alex", "Carlos", "Ana", "Bruna", "Jake", "José", "José da Silva"]
 const listaDeClientes =  []
 const listaDeFornecedores = []
 
@@ -107,7 +107,71 @@ const manipularDados = function(){
     
 
     console.log(listaDeFornecedores)
+
+    //Permite adicionar novos elementos no array sempre no INICIO da lista
+    listaDeFornecedores.unshift("Ana Carolina")
+    console.table(listaDeFornecedores)
+
+    //Permite remover elementos do FINAL da lista
+    listaDeFornecedores.pop()
+    console.table(listaDeFornecedores)
+
+    //Permite remover elementos do INICIO da lista
+    listaDeFornecedores.shift()
+    console.table(listaDeFornecedores)
+
+    //Permite remover um elemento baseado no indice da lista
+                        // splice(indice, qtde de elementos)
+    listaDeFornecedores.splice(2,1)
+    console.table(listaDeFornecedores)
+}   
+
+const removerItem = function(nome){
+
+    //Retorna o indice de um elemento fazendo a busca pelo valor
+    let indice = listaDeNomes.indexOf(nome)
+    if(indice != 1){
+        listaDeNomes.splice(indice,1)
+        return true
+    }else{
+        return false
+    }
+
+    // for(indice in listaDeNomes){
+    //     if(listaDeNomes[indice] == nome){
+    //         listaDeNomes.splice(indice,1)
+    //     }
+    // }
+
 }
 
+const verificarItem = function(nome){
+    //Verifica a exixtencia de um conteudo dentro de uma lista (true/false)
+    return listaDeNomes.includes(nome)
+}
+
+const quantidadeItens = function(nome){
+    let cont = 0
+    listaDeNomes.forEach(function(item){
+        if(String(item).toUpperCase() == String(nome).toUpperCase())
+            cont +=1
+    })
+    return cont
+}
+
+
+    
 //exibirDados()
-manipularDados()
+//manipularDados()
+// console.table(listaDeNomes)
+
+// let resposta = removerItem("Alex")
+// if(resposta)
+//     console.log("Item removido com sucesso!")
+// else
+//     console.log("Não encontrado!")
+// console.table(listaDeNomes)
+
+// console.log(verificarItem("Maria"))
+
+console.log(quantidadeItens("José"))
