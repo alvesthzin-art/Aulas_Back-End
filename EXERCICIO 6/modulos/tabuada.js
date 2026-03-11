@@ -5,14 +5,19 @@ const validarDados = function(vTabInicial, vTabFinal, vContInicial, vContFinal) 
     if (vTabInicial === '' || vTabFinal === '' || vContInicial === '' || vContFinal === '') {
         console.log("ERRO: Todas as entradas devem ser preenchidas!!")
         status = false
-    } 
+    }
+    // BUG CORRIGIDO: Verificar se são números válidos antes de comparar intervalos
+    else if (isNaN(Number(vTabInicial)) || isNaN(Number(vTabFinal)) || isNaN(Number(vContInicial)) || isNaN(Number(vContFinal))) {
+        console.log("ERRO: Digite apenas números!!")
+        status = false
+    }
     // Requisito: Tabuada entre 2 e 100
-    else if (vTabInicial < 2 || vTabFinal > 100 || vTabInicial > 100 || vTabFinal < 2) {
+    else if (Number(vTabInicial) < 2 || Number(vTabFinal) > 100 || Number(vTabInicial) > 100 || Number(vTabFinal) < 2) {
         console.log("ERRO: As tabuadas devem estar entre 2 e 100!!")
         status = false
     }
     // Requisito: Contador entre 1 e 50
-    else if (vContInicial < 1 || vContFinal > 50 || vContInicial > 50 || vContFinal < 1) {
+    else if (Number(vContInicial) < 1 || Number(vContFinal) > 50 || Number(vContInicial) > 50 || Number(vContFinal) < 1) {
         console.log("ERRO: O cálculo da tabuada deve ser entre 1 e 50!!")
         status = false
     }

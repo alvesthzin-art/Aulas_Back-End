@@ -43,7 +43,16 @@ entradaDeDados.question("Nome do aluno: ", function(aluno){
                                             // LÓGICA DE EXAME
                                             console.log(`\nMédia ${media.toFixed(1)}: Aluno em EXAME.`)
                                             entradaDeDados.question("Digite a nota do exame: ", function(notaExame){
-                                                let mediaExame = (media + Number(notaExame)) / 2
+                                                
+                                                // BUG CORRIGIDO: validar nota do exame
+                                                let ne = Number(notaExame)
+                                                if (notaExame === "" || isNaN(ne) || ne < 0 || ne > 100) {
+                                                    console.log("ERRO: Nota do exame inválida! Digite um número entre 0 e 100.")
+                                                    entradaDeDados.close()
+                                                    return
+                                                }
+
+                                                let mediaExame = (media + ne) / 2
                                                 let statusExame = mediaExame >= 60 ? "APROVADO(A) NO EXAME" : "REPROVADO(A) NO EXAME"
                                                 
                                                 gerarRelatorio(dados, media, statusExame, notaExame, mediaExame)
