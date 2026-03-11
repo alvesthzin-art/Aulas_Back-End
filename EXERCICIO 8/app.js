@@ -11,25 +11,40 @@ var entradaDeDados = readline.createInterface({
     output: process.stdout
 })
 
-entradaDeDados.question("Digite o número inicial (0 a 500): ", function(numI) {
-    entradaDeDados.question("Digite o número final (100 a 1000): ", function(numF) {
+entradaDeDados.question("Número inicial (0-500): ", function(numI) {
+    entradaDeDados.question("Número final (100-1000): ", function(numF) {
         
-        let resultado = gerenciarNumeros(numI, numF)
+        console.log("\nEscolha uma opção:")
+        console.log("1 - Somente Pares")
+        console.log("2 - Somente Ímpares")
+        console.log("3 - Ambos (Pares e Ímpares)")
+        
+        entradaDeDados.question("\nDigite sua opção: ", function(opcao) {
+            
+            let resultado = gerenciarNumeros(numI, numF)
 
-        if (resultado.erro) {
-            console.log(resultado.erro)
-        } else {
-            // Exibição dos Pares
-            console.log("\nLista de números Pares")
-            resultado.pares.forEach(num => console.log(num))
-            console.log(`Qtde de números encontrados: ${resultado.totalPares}`)
+            if (resultado.erro) {
+                console.log(resultado.erro)
+            } else {
+                // Lógica de exibição baseada na escolha
+                if (opcao == "1" || opcao == "3") {
+                    console.log("\n--- LISTA DE PARES ---")
+                    resultado.pares.forEach(n => console.log(n))
+                    console.log(`Qtde: ${resultado.pares.length}`)
+                }
 
-            // Exibição dos Ímpares
-            console.log("\nLista de números Impares")
-            resultado.impares.forEach(num => console.log(num))
-            console.log(`Qtde de números encontrados: ${resultado.totalImpares}`)
-        }
+                if (opcao == "2" || opcao == "3") {
+                    console.log("\n--- LISTA DE ÍMPARES ---")
+                    resultado.impares.forEach(n => console.log(n))
+                    console.log(`Qtde: ${resultado.impares.length}`)
+                }
 
-        entradaDeDados.close()
+                if (opcao !== "1" && opcao !== "2" && opcao !== "3") {
+                    console.log("ERRO: Opção de escolha inválida!")
+                }
+            }
+
+            entradaDeDados.close()
+        })
     })
 })
