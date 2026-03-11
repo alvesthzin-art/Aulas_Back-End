@@ -4,41 +4,52 @@
  * Autor: Thiago 
  *****************************************************************/
 var readline = require("readline")
+const { validarDados, calcularMedia, gerarRelatorio } = require("./modulos/calculoMedia")
+
 var entradaDeDados = readline.createInterface({
     input: process.stdin,
     output: process.stdout
-})  
+})
 
+entradaDeDados.question("Nome do aluno: ", function(aluno){
+    entradaDeDados.question("Sexo Aluno (M/F): ", function(sexoA){
+        entradaDeDados.question("Nome do professor: ", function(professor){
+            entradaDeDados.question("Sexo Professor (M/F): ", function(sexoP){
+                entradaDeDados.question("Curso: ", function(curso){
+                    entradaDeDados.question("Disciplina: ", function(disciplina){
+                        entradaDeDados.question("Nota 1: ", function(n1){
+                            entradaDeDados.question("Nota 2: ", function(n2){
+                                entradaDeDados.question("Nota 3: ", function(n3){
+                                    entradaDeDados.question("Nota 4: ", function(n4){
+                                        
+                                        const dados = { aluno, sexoA, professor, sexoP, curso, disciplina, n1, n2, n3, n4 }
+                                        const validacao = validarDados(dados)
 
-entradaDeDados.question("Digite o nome do aluno: ", function(aluno){
-    let nomeAluno = aluno
+                                        if (validacao !== true) {
+                                            console.log(`ERRO: Verifique se preencheu tudo corretamente (Notas 0-100).`)
+                                            entradaDeDados.close()
+                                            return
+                                        }
 
-    entradaDeDados.question("Digite o sexo do aluno: (M para masculino e F para feminino)", function(generoAluno){
-        let sexoAluno = generoAluno
-
-        entradaDeDados.question("Digite o nome do(a) professor(a): ", function(professor){
-            let nomeProfessor = professor
-
-            entradaDeDados.question("Digite o sexo do(a) professor(a) (M para masculino e F para feminino): ", function(generoProfessor){
-                let sexoProfessor = generoProfessor
-
-                entradaDeDados.question("Digite o nome do curso: ", function(curso){
-                    let nomeCurso = curso
-
-                    entradaDeDados.question("Digite o nome da disciplina: ", function(disciplina){
-                        let nomeDisciplina = disciplina
-
-                        entradaDeDados.question("Digite a primeira nota de 0 a 100: ", function(nota1){
-                            let primeiraNota = nota1
-
-                            entradaDeDados.question("Digite a segunda nota de 0 a 100: ", function(nota2){
-                                let segundaNota = nota2
-
-                                entradaDeDados.question("Digite a terceira nota de 0 a 100: ", function(nota3){
-                                    let terceiraNota = nota3
-
-                                    entradaDeDados.question("Digite a quarta nota de 0 a 100: ", function(){
-                                        let quartaNota = nota4
+                                        let media = calcularMedia(n1, n2, n3, n4)
+                                        
+                                        if (media >= 70) {
+                                            gerarRelatorio(dados, media, "APROVADO(A)")
+                                            entradaDeDados.close()
+                                        } else if (media < 50) {
+                                            gerarRelatorio(dados, media, "REPROVADO(A)")
+                                            entradaDeDados.close()
+                                        } else {
+                                            // LÓGICA DE EXAME
+                                            console.log(`\nMédia ${media.toFixed(1)}: Aluno em EXAME.`)
+                                            entradaDeDados.question("Digite a nota do exame: ", function(notaExame){
+                                                let mediaExame = (media + Number(notaExame)) / 2
+                                                let statusExame = mediaExame >= 60 ? "APROVADO(A) NO EXAME" : "REPROVADO(A) NO EXAME"
+                                                
+                                                gerarRelatorio(dados, media, statusExame, notaExame, mediaExame)
+                                                entradaDeDados.close()
+                                            })
+                                        }
                                     })
                                 })
                             })
@@ -48,4 +59,4 @@ entradaDeDados.question("Digite o nome do aluno: ", function(aluno){
             })
         })
     })
-})    
+})
