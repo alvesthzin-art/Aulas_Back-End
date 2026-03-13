@@ -9,11 +9,10 @@ const calcularFatorial = function(numero) {
     if (valor < 0) return "ERRO: Não existe fatorial de número negativo!"
     if (valor === 0) return "ERRO: Não existe fatorial de 0!"
 
-    // BUG CORRIGIDO: fatorial de 1 é válido (1! = 1)
-    // BUG CORRIGIDO: rejeitar números decimais (fatorial só existe para inteiros)
+    
     if (!Number.isInteger(valor)) return "ERRO: Digite apenas números inteiros!"
 
-    // BUG CORRIGIDO: limitar para evitar Infinity
+    
     if (valor > 170) return "ERRO: Número muito grande! Digite um valor até 170."
 
     // Cálculo do Fatorial e montagem da expressão (ex: 5x4x3x2x1)

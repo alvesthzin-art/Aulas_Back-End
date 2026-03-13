@@ -44,7 +44,7 @@ entradaDeDados.question("Nome do aluno: ", function(aluno){
                                             console.log(`\nMédia ${media.toFixed(1)}: Aluno em EXAME.`)
                                             entradaDeDados.question("Digite a nota do exame: ", function(notaExame){
                                                 
-                                                // BUG CORRIGIDO: validar nota do exame
+                                                
                                                 let ne = Number(notaExame)
                                                 if (notaExame === "" || isNaN(ne) || ne < 0 || ne > 100) {
                                                     console.log("ERRO: Nota do exame inválida! Digite um número entre 0 e 100.")

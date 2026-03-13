@@ -124,6 +124,15 @@ const manipularDados = function(){
                         // splice(indice, qtde de elementos)
     listaDeFornecedores.splice(2,1)
     console.table(listaDeFornecedores)
+
+    //Splice() -> Permite adicionar um novo elemento em um determinadp lugar do array (indice)
+                            //Indice, 0 -> Significa que não sera removido ninguem, Novo conteudo
+    listaDeFornecedores.splice(2,0, "Carlos da Silva")
+    console.table(listaDeFornecedores)
+
+    //Substitui o indice informado e adiciona outro conteudo
+    listaDeFornecedores[1] = "novo conteudo"
+    console.table(listaDeFornecedores)
 }   
 
 const removerItem = function(nome){
@@ -158,6 +167,108 @@ const quantidadeItens = function(nome){
     })
     return cont
 }
+//JSON é baseado em chave e valor
+const criandoDadosJSON = function(){
+    let aluno = {   "nome": "josé", 
+                    "ra": 123456, 
+                    "telefone": "9757574414", 
+                    "email": "jose@gmail.com"
+                }
+
+                //Exibindo o objeto JSON completo
+                console.log(aluno)
+                console.table(aluno)
+
+                //Exibindo apenas um atributo do JSON
+                console.log(aluno.nome)
+                console.log(aluno.email)
+
+                //Adicionando um novo atributo no JSON
+                aluno.sexo = "Masculino"
+                console.log(aluno)
+
+                //Remove um atributo do JSON
+                delete aluno.telefoneconsole
+                console.log(aluno)
+}
+
+const cadastroDeProdutos = function(){
+    let cores = [
+        {"id": 1, "cor": "Branco"}, //indice 0
+        {"id": 2, "cor":"Preto"}, //indice 1
+        {"id": 3, "cor":"Azul"}, //indice 2
+        {"id": 4, "cor":"Rosa"}, //indice 3
+        {"id": 5, "cor":"Cinza"} //indice 4
+
+    ]
+
+    let marcas = [
+        {"id": 1, "marca": "LG", "telefone": "123456789", "email": "lg@lg.com.br"},
+        {"id": 2, "marca": "Dell", "telefone": "123463789", "email": "contato@lg.com.br"},
+        {"id": 3, "marca": "Lenovo", "telefone": "128556789", "email": "contato@lg.com.br"},
+        {"id": 4, "marca": "Apple", "telefone": "123453289", "email": "contato@lg.com.br"},
+        {"id": 5, "marca": "Razer", "telefone": "123456149", "email": "contato@lg.com.br"},
+        {"id": 6, "marca": "Logitech", "telefone": "123786789", "email": "contato@lg.com.br"},
+        {"id": 7, "marca": "Multilaser", "telefone": "123226789", "email": "contato@lg.com.br"}
+    ]
+
+    let produtos = [
+        {
+            "id": 1,
+            "nome": "Monitor",
+            "descricao": "27 polegadas",
+            "marca": [marcas[1].marca], 
+            "qtde": 20,
+            "cor": [cores[4], cores[1]],
+            "valor": 800.50
+        }, 
+        {
+            "id": 2,
+            "nome": "Teclado",
+            "descricao": "teclado mecanico RGB",
+            "marca": [marcas[5].marca],
+            "qtde": 200,
+            "cor": cores[1],
+            "valor": 150   
+        },
+        {
+            "id": 3,
+            "nome": "Mouse",
+            "descricao": "Mouseu sem fio",
+            "marca": [
+                marcas[0].marca,
+                marcas[1].marca,
+                marcas[5].marca
+            ],
+            "qtde": 500,
+            "cor": [
+                cores[0],
+                cores[1],
+                cores[5],
+            ],
+            "valor": 80
+        } 
+    ]
+    
+   
+
+
+    // console.log(cores)
+    // console.table(cores)
+
+    // console.log(cores[2])
+
+    // console.log(produtos)
+    // console.log(produtos[0].cor)
+    // console.log(produtos[0].cor[1].cor)
+
+    console.table(produtos)
+
+    // produtos[0].cor.forEach(function(nomeCor){
+    //     console.log("A cor do produto é " + nomeCor.cor)
+    // })
+}
+cadastroDeProdutos()
 
 
     
@@ -174,4 +285,8 @@ const quantidadeItens = function(nome){
 
 // console.log(verificarItem("Maria"))
 
-console.log(quantidadeItens("José"))
+// console.log(quantidadeItens("José"))
+
+// manipularDados()
+
+// criandoDadosJSON()

@@ -6,7 +6,7 @@ const validarDados = function(vTabInicial, vTabFinal, vContInicial, vContFinal) 
         console.log("ERRO: Todas as entradas devem ser preenchidas!!")
         status = false
     }
-    // BUG CORRIGIDO: Verificar se são números válidos antes de comparar intervalos
+   
     else if (isNaN(Number(vTabInicial)) || isNaN(Number(vTabFinal)) || isNaN(Number(vContInicial)) || isNaN(Number(vContFinal))) {
         console.log("ERRO: Digite apenas números!!")
         status = false
