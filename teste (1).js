@@ -1,6 +1,6 @@
 /*****************************************************************
  * Arquivo: teste.js
- * Objetivo: Testes automatizados dos Exercícios 4 ao 8
+ * Objetivo: Testes automatizados dos Exercícios
  * Autor: Thiago
  *****************************************************************/
 
