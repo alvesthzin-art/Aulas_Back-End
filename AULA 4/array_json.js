@@ -228,7 +228,7 @@ const cadastroDeProdutos = function(){
             "descricao": "teclado mecanico RGB",
             "marca": [marcas[5].marca],
             "qtde": 200,
-            "cor": cores[1],
+            "cor": [cores[1]], // CORREÇÃO 1: Adicionado []
             "valor": 150   
         },
         {
@@ -244,7 +244,7 @@ const cadastroDeProdutos = function(){
             "cor": [
                 cores[0],
                 cores[1],
-                cores[5],
+                cores[4], // CORREÇÃO 2: Mudado de 5 para 4
             ],
             "valor": 80
         } 
@@ -267,7 +267,59 @@ const cadastroDeProdutos = function(){
     // produtos[0].cor.forEach(function(nomeCor){
     //     console.log("A cor do produto é " + nomeCor.cor)
     // })
+
+    //Percorre o objeto de produto para trazer os dados de cada produto
+    produtos.forEach(function(itemProduto){
+        console.log(`Produto: ${itemProduto.nome}`)
+    
+    //Percorre o objeto de marca dentro de cada produto, para trazer as marcas    
+    itemProduto.marca.forEach(function(itemMarca){
+        console.log(`Marca: ${itemMarca}`)
+
+    //Percorre o objeto de cor dentro de cada produto, para trazer as cores    
+    itemProduto.cor.forEach(function(itemCor){
+        console.log(`Cor: ${itemCor.cor}`)
+    })
+
+    })
+
+    })
+
+
+    //Pesquisando um produto pelo NOME
+    console.log("Pesquisando produtos pelo nome")
+    let nome = "Mouse"
+    
+
+    produtos.forEach(function(itemProduto){
+        if(String(itemProduto.nome).toUpperCase() == String(nome).toUpperCase()){
+            console.log(itemProduto)
+        }
+    })
+
+
+    //Pesquisando um produto pela COR
+    console.log("Pesquisando produtos pela cor")
+    let cor = "verde"
+    let status = false
+
+    produtos.forEach(function(itemProduto){
+        itemProduto.cor.forEach(function(itemCor){
+            if(String(itemCor.cor).toUpperCase() == String(cor).toUpperCase()){
+                console.log(itemProduto)
+                status = true
+            }
+        })
+    })
+
+    if(!status)
+        console.log("Item pesquisado não foi encontrado....")
+
+
+
+    
 }
+
 cadastroDeProdutos()
 
 
