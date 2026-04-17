@@ -19,7 +19,11 @@ const DEFAULT_MESSAGE = {
 //Mensagens de erro da API
 const ERROR_BAD_REQUEST = {status : false, status_code: 400, message: 'Os dados enviados na requisição não estão corretos.'}
 
+//Mensagens de Sucesso da API
+const SUCCESS_CREATED_ITEM = {status: true, status_code: 201, message: 'Registro inserido com sucesso.'}
 
 module.exports = {
-    DEFAULT_MESSAGE, ERROR_BAD_REQUEST
+    DEFAULT_MESSAGE,
+    ERROR_BAD_REQUEST,
+    SUCCESS_CREATED_ITEM 
 }

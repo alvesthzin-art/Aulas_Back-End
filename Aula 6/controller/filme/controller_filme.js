@@ -36,6 +36,18 @@ const inserirNovoFilme = async function(filme){
         message.ERROR_BAD_REQUEST.field = '[CAPA] INVÁLIDO'
     }else{
         let result = await filmeDAO.insertFilme(filme)
+        if(result){//201
+            message.DEFAULT_MESSAGE.status = message.SUCCESS_CREATED_ITEM.status
+            message.DEFAULT_MESSAGE.status_code = message.SUCCESS_CREATED_ITEM.status_code
+            message.DEFAULT_MESSAGE.message = message.SUCCESS_CREATED_ITEM.message
+        }else{//400
+            message.DEFAULT_MESSAGE.status = message.ERROR_BAD_REQUEST.status
+            message.DEFAULT_MESSAGE.status_code = message.ERROR_BAD_REQUEST.status_code
+            message.DEFAULT_MESSAGE.message = message.DEFAULT_MESSAGE.message
+            message.DEFAULT_MESSAGE.field = message.ERROR_BAD_REQUEST.field
+        } 
+
+        return message.DEFAULT_MESSAGE
     }
 }
 
@@ -57,4 +69,8 @@ const buscarFilme = async function(){
 //Função para excluir um filme
 const excluirFilme = async function(){
 
+}
+
+module.exports = {
+    inserirNovoFilme
 }
