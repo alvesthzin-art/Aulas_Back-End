@@ -10,7 +10,7 @@ Este repositório é o meu guia de estudos e prática em desenvolvimento Back-En
 O repositório está dividido para facilitar a consulta e o aprendizado:
 
 - **Pastas `AULA`:** Notas de aula e exemplos explicados passo a passo pelo professor. Servem como minha base teórica sobre o ecossistema Node.js.
-- **Pastas `EXERCICIO`:** Desafios práticos implementados por mim para fixação de conceitos, lógica de programação e manipulação de servidores.
+- **Pastas `EXERCICIO`:** Desafios práticos para fixação de conceitos, lógica de programação e manipulação de servidores.
 
 ### 🛠️ Tecnologias e Conceitos Explorados
 Neste módulo, estamos focando em:
@@ -19,7 +19,6 @@ Neste módulo, estamos focando em:
 - **Gerenciamento de Módulos:** Uso de CommonJS e ESModules.
 - **NPM (Node Package Manager):** Instalação e gestão de dependências.
 - **APIs REST:** Início da construção de rotas e manipulação de métodos HTTP (GET, POST, etc).
-- **Lógica Assíncrona:** Tratamento de dados e fluxos de execução no Back-End.
 
 
 👨‍💻 Desenvolvedor
