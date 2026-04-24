@@ -36,5 +36,8 @@ create table tbl_filme (
                             '50.70',
                             'https://br.web.img3.acsta.net/c_310_420/img/5b/ea/5bea1aeac3323aeaaf82449a34fafbbf.jpg');
                             
-select * from tbl_filme
+select * from tbl_filme;
+select * from tbl_filme order by id desc;
+
+delete from tbl_filme where
                             

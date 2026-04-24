@@ -25,16 +25,34 @@ app.use(cors(corsOptions))
 
 
 //ENDPOINTS
-app.post('/v1/senai/locadora/filme', bodyParserJSON, async function(request, response){
-    //Recebe o conteúdo dentro do body da requisição
+// Rota para inserir um novo filme
+app.post('/v1/senai/locadora/filme', bodyParserJSON, async (request, response) => {
+    // recebe o conteudo dentro do body da requisição
     let dados = request.body
+    let conteType = request.headers['content-type']// linha adicionada para receber o content-type do header da requisição
 
-    let result = await controllerFilme.inserirNovoFilme(dados)
+    let result = await controllerFilme.inserirNovoFilme(dados,conteType)
+    
+    response.status(result.status_code)
+    response.json(result)
+})
+
+app.get('/v1/senai/locadora/filme', async function(request, response){
+    let result = await controllerFilme.listarFilme()
 
     response.status(result.status_code)
     response.json(result)
 })
 
+app.get("/v1/senai/locadora/filme/:id", async function(request, response){
+    //Recebe o id via parametro
+    let id = request.params.id
+
+    let result = await controllerFilme.buscarFilme(id)
+
+    response.status(result.status_code)
+    response.json(result)
+})
 
 
 
