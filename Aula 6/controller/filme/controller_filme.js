@@ -59,19 +59,19 @@ async function validarDados(filme) {
 }
 
 //Função para inserir um novo filme
-async function inserirNovoFilme(filme,conteType) {
+const inserirNovoFilme = async function (filme,contentType) {
 
     //criando clone  do objeto json para manipular a estrutura local sem modificar o original
     let message = JSON.parse(JSON.stringify(config_message))    
 
     try {
 
-        if (String(conteType).toLocaleLowerCase()== 'application/json') {
+        if(String(contentType).toLocaleLowerCase()== 'application/json') {
             
         
             let validar = await validarDados(filme)
 
-            //se validar retornanr algo significa que é json de ero e ja sera retornado 
+            //se validar retorna algo significa que é json de erro e ja sera retornado 
             if(validar){
                 return validar
             }else{
@@ -98,9 +98,47 @@ async function inserirNovoFilme(filme,conteType) {
     }
 }
 
-//Função para atualizar um filme
-const atualizarFilme = async function(){
+// Função para atualizar um filme
+const atualizarFilme = async function(filme, id, contentType){
 
+    let message = JSON.parse(JSON.stringify(config_message))
+
+    try {
+        if (String(contentType).toLowerCase().includes('application/json')) {
+
+            let resultBuscarID = await buscarFilme(id)
+
+            if(resultBuscarID.status){
+                let validar = await validarDados(filme)
+
+                if(!validar){
+                    filme.id = id
+
+                    let result = await filmeDAO.updateFilme(filme)
+
+                    if(result){
+                        message.DEFAULT_MESSAGE.status = message.SUCCESS_UPDATED_ITEM.status
+                        message.DEFAULT_MESSAGE.status_code = message.SUCCESS_UPDATED_ITEM.status_code
+                        message.DEFAULT_MESSAGE.message = message.SUCCESS_UPDATED_ITEM.message
+
+                        return message.DEFAULT_MESSAGE 
+                    } else {
+                        return message.ERROR_INTERNAL_SERVER_MODEL 
+                    }
+
+                } else {
+                    return validar 
+                }
+            } else {
+                return resultBuscarID 
+            }
+            
+        } else {
+            return message.ERROR_CONTENT_TYPE 
+        }
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER 
+    }
 }
 
 //Função para retornar todos os filmes
@@ -165,12 +203,40 @@ const buscarFilme = async function(id) {
     
     // Função para excluir um filme
     const excluirFilme = async function(id){
-    }
+
+        //criando clone  do objeto json para manipular a estrutura local sem modificar o original
+            let message = JSON.parse(JSON.stringify(config_message))
+        
+            try {
+                // Validação de ID
+                if (id == "" || id == null || id == undefined || isNaN(id)) {
+                    return message.ERROR_BAD_REQUEST // 400
+                } else {
+                    // Verifica se o filme existe antes de excluir
+                    let dadosFilme = await buscarFilme(id)
+        
+                    if (dadosFilme.status) {
+                        let result = await filmeDAO.deleteFilme(id)
+        
+                        if (result) {
+                            return message.SUCCESS_DELETED_ITEM // 200 ou 204
+                        } else {
+                            return message.ERROR_INTERNAL_SERVER_MODEL // 500
+                        }
+                    } else {
+                        return message.ERROR_NOT_FOUND // 404 (Filme não existe)
+                    }
+                }
+            } catch (error) {
+                return message.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+            }
+        }
     
     module.exports = {
         inserirNovoFilme, 
         validarDados, 
         listarFilme, 
         buscarFilme,
-        excluirFilme
+        excluirFilme,
+        atualizarFilme
     }

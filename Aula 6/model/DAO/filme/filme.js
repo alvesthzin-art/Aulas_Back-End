@@ -17,7 +17,7 @@ const knexConfig = require('../../database_config-knex/knexFile.js')
 const knexConex = knex(knexConfig.development)
 
 // Função para inserir dados na tabela Filme
-async function insertFilme(filme){
+const insertFilme = async function (filme){
 
     try {
     let sql = `insert into tbl_filme (
@@ -54,6 +54,29 @@ async function insertFilme(filme){
 
 //Função para atualizar um filme existente na tabela
 const updateFilme = async function(filme){
+    try {
+        //Script para atualizar os dados do banco
+        let sql = `update tbl_filme set
+                        nome =              '${filme.nome}',
+                        data_lancamento =   '${filme.data_lancamento}',
+                        duracao =           '${filme.duracao}',
+                        sinopse =           '${filme.sinopse}',
+                        avaliacao =         '${filme.avaliacao}',
+                        valor =             '${filme.valor}',
+                        capa =              '${filme.capa}'
+                    where id = ${filme.id}`
+
+        //Executa o script SQL no BD
+        let result = await knexConex.raw(sql)
+        
+        if(result)
+            return true
+        else 
+            return false
+
+    } catch (error) {
+        return false
+    }
     
 }
 
@@ -97,8 +120,20 @@ const selectByIdFilme = async function(id){
 
 //Função para excluir um filme pelo ID
 const deleteFilme = async function(id){
-
-}
+        try {
+            let sql = `delete from tbl_filme where id = ${id}`
+    
+            let result = await knexConex.raw(sql)
+    
+            if (result)
+                return true
+            else
+                return false
+    
+        } catch (error) {
+            return false
+        }
+    }
 
 module.exports = {
     insertFilme, updateFilme, selectAllFilme,

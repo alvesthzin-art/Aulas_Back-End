@@ -39,5 +39,10 @@ create table tbl_filme (
 select * from tbl_filme;
 select * from tbl_filme order by id desc;
 
-delete from tbl_filme where
+delete from tbl_filme where id > 0;
+
+update tbl_filme set nome = 'filme01'
+	where id = 6;
+
+
                             

@@ -35,6 +35,19 @@ const SUCCESS_RESPONSE = {
     status_code: 200
 }
 
+//Retornos para PUT 200
+const SUCCESS_UPDATED_ITEM = {
+    status: true,
+    status_code: 200,
+    message: 'Registro atualizado com sucesso'
+}
+
+const SUCCESS_DELETED_ITEM = {
+    status: true,
+    status_code: 200,
+    message: 'Excluido com sucesso'
+}
+
 
 //Mensagem de erro para falha na modelagem de dados, para manter o código mais organizado e facilitar a manutenção
 const ERROR_INTERNAL_SERVER_MODEL ={
@@ -73,5 +86,7 @@ module.exports = {
     ERROR_INTERNAL_SERVER_CONTROLLER,
     ERROR_CONTENT_TYPE,
     ERROR_NOT_FOUND,
-    SUCCESS_RESPONSE
+    SUCCESS_RESPONSE,
+    SUCCESS_UPDATED_ITEM,
+    SUCCESS_DELETED_ITEM
 }
