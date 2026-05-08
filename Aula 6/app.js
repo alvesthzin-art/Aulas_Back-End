@@ -70,6 +70,7 @@ app.put('/v1/senai/locadora/filme/:id', bodyParserJSON, async function(request, 
     response.json(result)
 })
 
+//Endpoint para deletar um filme pelo ID
 app.delete('/v1/senai/locadora/filme/:id', async function(request, response){
     let id = request.params.id
 

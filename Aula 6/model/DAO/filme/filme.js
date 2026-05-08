@@ -41,7 +41,7 @@ const insertFilme = async function (filme){
                 let result = await knexConex.raw(sql)
 
             if(result){
-                return true 
+                return result[0].insertId // Retorna o ID do registro inserido 
             }else{
                 return false
             }
@@ -121,12 +121,16 @@ const selectByIdFilme = async function(id){
 //Função para excluir um filme pelo ID
 const deleteFilme = async function(id){
         try {
+            //Script SQL para deletar um dado da tabela Filme pelo ID
             let sql = `delete from tbl_filme where id = ${id}`
     
+            // Executa o comando SQL no banco de dados e retorna o resultado da consulta
             let result = await knexConex.raw(sql)
     
-            if (result)
-                return true
+            //Validação para verificar se o Banco de Dados é um array
+            //Se o script der errado ou não houver registros, o resultado não será um array, e a função retornará false
+            if (Array.isArray(result))
+                return result[0] //Retorna apenas o array de dados
             else
                 return false
     
