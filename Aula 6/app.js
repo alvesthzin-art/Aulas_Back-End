@@ -6,6 +6,18 @@ const bodyParser    = require('body-parser')
 //Import das CONTROLLERS do projeto
 const controllerFilme = require('./controller/filme/controller_filme.js')
 
+//Import da tabela de sexo
+const controllerSexo = require('./controller/sexo/controller_sexo.js')
+
+//Import da tabela de genero
+const controllerGenero = require("./controller/genero/controller_genero.js")
+
+//Import da tabela de classificação
+const controllerClassificacao = require('./controller/classificacao/controller_classificacao.js')
+
+//Import da tabela de ator
+const controllerAtor = require('./controller/ator/controller_ator.js')
+
 //Criando um objeto para manipular dados do body da API em formato JSON
 const bodyParserJSON = bodyParser.json()
 
@@ -15,7 +27,7 @@ const app = express()
 //Conjunto de permissões a serem aplicadas no CORS da API
 const corsOptions = {
     origin: "*", //A origem da requisição, podendo ser um IP ou *(Todos)
-    methods: ["GET, POST, PUT, DELETE, OPTIONS"], //São os verbos que serão liberados na API
+    methods: "GET, POST, PUT, DELETE, OPTIONS", //São os verbos que serão liberados na API
     allowedHeaders: ["Content-type", "Authorization"] //São permissões de cabeçalho do CORS
 }
 
@@ -78,6 +90,64 @@ app.delete('/v1/senai/locadora/filme/:id', async function(request, response){
 
     response.status(result.status_code)
     response.json(result)
+})
+
+// Rota para listar todos os sexos
+app.get('/v1/senai/locadora/sexo', async function(request, response){
+    let result = await controllerSexo.listarSexo()
+    response.status(result.status_code).json(result)
+})
+
+// Rota para inserir um novo sexo
+app.post('/v1/senai/locadora/sexo', bodyParserJSON, async (request, response) => {
+    let dados = request.body
+    let contentType = request.headers['content-type']
+    let result = await controllerSexo.inserirNovoSexo(dados, contentType)
+    response.status(result.status_code).json(result)
+})
+
+// GET Gênero
+app.get('/v1/senai/locadora/genero', async function(request, response){
+    let result = await controllerGenero.listarGeneros()
+    response.status(result.status_code).json(result)
+})
+
+// POST Gênero
+app.post('/v1/senai/locadora/genero', bodyParserJSON, async (request, response) => {
+    let dados = request.body
+    let contentType = request.headers['content-type']
+    let result = await controllerGenero.inserirNovoGenero(dados, contentType)
+    response.status(result.status_code).json(result)
+})
+
+// GET Classificação
+app.get('/v1/senai/locadora/classificacao', async function(request, response){
+    let result = await controllerClassificacao.listarClassificacoes()
+    response.status(result.status_code).json(result)
+})
+
+// POST Classificação
+app.post('/v1/senai/locadora/classificacao', bodyParserJSON, async (request, response) => {
+    let dados = request.body
+    let contentType = request.headers['content-type']
+    let result = await controllerClassificacao.inserirNovaClassificacao(dados, contentType)
+    response.status(result.status_code).json(result)
+})
+
+// GET ator
+app.get('/v1/senai/locadora/ator', async function(request, response){
+    let result = await controllerAtor.listarAtores()
+    
+    response.status(result.status_code)
+    response.json(result)
+})
+
+// POST ator
+app.post('/v1/senai/locadora/ator', bodyParserJSON, async (request, response) => {
+    let dados = request.body
+    let contentType = request.headers['content-type']
+    let result = await controllerAtor.inserirNovoAtor(dados, contentType)
+    response.status(result.status_code).json(result)
 })
 
 

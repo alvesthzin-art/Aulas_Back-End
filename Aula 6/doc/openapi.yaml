@@ -1,0 +1,131 @@
+openapi: 3.0.3
+info:
+  title: Projeto do SENAI Jandira - Professor Marcel
+  description: API destinada a controle de filmes
+  termsOfService: http://swagger.io/terms/
+  version: 1.4.26
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://localhost:8080
+    description: Servidor Local
+paths:
+  /v1/senai/locadora/filme:
+    post:
+      tags:
+        - Filme
+      summary: Adiciona um novo filme
+      description: Adiciona um novo filme no banco de dados
+      requestBody:
+        $ref: '#/components/requestBodies/Filme'
+      responses:
+        '201':
+          description: Successful operation
+        '400':
+          description: Invalid input
+    get:
+      tags:
+        - Filme
+      summary: Lista todos os filmes
+      description: Listagem de todos os filmes registrados no sistema
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Filme'
+        '404':
+          description: Not Found
+
+  /v1/senai/locadora/filme/{id}:
+    get:
+      tags:
+        - Filme
+      summary: Busca um filme pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Filme'
+        '404':
+          description: Filme não encontrado
+    put:
+      tags:
+        - Filme
+      summary: Atualizar um filme existente pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/Filme'
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Filme não encontrado
+    delete:
+      tags:
+        - Filme
+      summary: Excluir um filme pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Filme excluído com sucesso
+        '404':
+          description: Filme não encontrado
+
+components:
+  schemas:
+    Filme:
+      type: object
+      required:
+        - nome
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        sinopse:
+          type: string
+        data_lancamento:
+          type: string
+          format: date
+        duracao:
+          type: string
+        valor:
+          type: number
+          format: float
+        avaliacao:
+          type: integer
+        capa:
+          type: string
+
+  requestBodies:
+    Filme:
+      description: Objeto que deve ser enviado no Body das requisições
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Filme'

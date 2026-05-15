@@ -129,8 +129,8 @@ const deleteFilme = async function(id){
     
             //Validação para verificar se o Banco de Dados é um array
             //Se o script der errado ou não houver registros, o resultado não será um array, e a função retornará false
-            if (Array.isArray(result))
-                return result[0] //Retorna apenas o array de dados
+            if (result)
+                return true
             else
                 return false
     
