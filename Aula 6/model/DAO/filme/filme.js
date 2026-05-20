@@ -26,15 +26,18 @@ const insertFilme = async function (filme){
                         duracao, sinopse, 
 						avaliacao, 
 						valor, 
-                        capa)
-					values(
+                        capa,
+                        id_classificacao
+                        )
+				 values(
                         '${filme.nome}',
                         '${filme.data_lancamento}',
                         '${filme.duracao}',
                         '${filme.sinopse}',
                         if('${filme.avaliacao}' = "", null,'${filme.avaliacao}'),
                         '${filme.valor}',
-                        '${filme.capa}'
+                        '${filme.capa}',
+                        '${filme.id_classificacao}'
                     );`
 
                 // Executa o comando SQL no banco de dados
@@ -57,13 +60,14 @@ const updateFilme = async function(filme){
     try {
         //Script para atualizar os dados do banco
         let sql = `update tbl_filme set
-                        nome =              '${filme.nome}',
-                        data_lancamento =   '${filme.data_lancamento}',
-                        duracao =           '${filme.duracao}',
-                        sinopse =           '${filme.sinopse}',
-                        avaliacao =         '${filme.avaliacao}',
-                        valor =             '${filme.valor}',
-                        capa =              '${filme.capa}'
+                        nome =                  '${filme.nome}',
+                        data_lancamento =       '${filme.data_lancamento}',
+                        duracao =               '${filme.duracao}',
+                        sinopse =               '${filme.sinopse}',
+                        avaliacao =             '${filme.avaliacao}',
+                        valor =                 '${filme.valor}',
+                        capa =                  '${filme.capa}',
+                        id_classificacao =      '${filme.id_classificacao}'
                     where id = ${filme.id}`
 
         //Executa o script SQL no BD

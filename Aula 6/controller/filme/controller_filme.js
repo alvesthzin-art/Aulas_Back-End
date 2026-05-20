@@ -1,6 +1,6 @@
 /************************************************************************************************************
- * Objetico: Arquivo responsavel pela validação, tratamento e
- *      manipulação de dados para o CRUD de filmes
+ * Objetivo: Arquivo responsavel pela validação, tratamento e
+ * manipulação de dados para o CRUD de filmes
  * Data: 17/04/2026
  * Autor: Thiago 
  * Versão: 1.0
@@ -12,6 +12,8 @@ const config_message = require('../modulo/configMessages.js')
 //Import do arquivo DAO para fazer o CRUD do filme no banco de dados
 const filmeDAO = require('../../model/DAO/filme/filme.js')
 
+const controller_classificacao = require('../classificacao/controller_classificacao.js')
+
 //Função para validar os dados do filme, garantindo que os dados estejam corretos antes de serem processados pelo model
 async function validarDados(filme) {
     //Criando uma cópia do objeto de mensagens para evitar alterações acidentais no objeto original
@@ -22,37 +24,41 @@ async function validarDados(filme) {
        message.ERROR_BAD_REQUEST.field = "[nome] invalido"
        return message.ERROR_BAD_REQUEST
 
-   //VALIDA DATA    
+    //VALIDA DATA    
     }else if(filme.data_lancamento == "" || filme.data_lancamento == null || filme.data_lancamento == undefined || filme.data_lancamento.length != 10 ){
        message.ERROR_BAD_REQUEST.field = "[DATA_LANCAMEMTO] invalido"
        return message.ERROR_BAD_REQUEST
 
-   //VALIDA DURACAO
+    //VALIDA DURACAO
     }else if (filme.duracao == "" || filme.duracao == null || filme.duracao == undefined || filme.duracao.length  < 5  ){
        message.ERROR_BAD_REQUEST.field = "[DURACAO] invalido"
        return message.ERROR_BAD_REQUEST
 
-   //VALIDA SINOPSE
+    //VALIDA SINOPSE
     }else if (filme.sinopse == ""       || filme.sinopse == null || filme.sinopse == undefined ){
        message.ERROR_BAD_REQUEST.field = "[SINOPSE] invalido"
        return message.ERROR_BAD_REQUEST
 
-   //VALIDA AVALIACAO
-    }else if(isNaN(filme.avaliacao) || filme.avaliacao.length > 3 ){
+    //VALIDA AVALIACAO
+    // ADICIONADO NA APOSTILA: Conversão preventiva para .toString() para evitar erros caso a avaliação venha como número puro do banco/Postman
+    }else if(isNaN(filme.avaliacao) || (filme.avaliacao && filme.avaliacao.toString().length > 3) ){
        message.ERROR_BAD_REQUEST.field = "[AVALIACAO] invalido"
        return message.ERROR_BAD_REQUEST
 
-   //VALIDA VALOR
-    }else if (filme.valor == "" || filme.valor == null || filme.valor == undefined || filme.valor.split('.')[0].length > 3 || isNaN( filme.valor) ){
+    //VALIDA VALOR
+    // ADICIONADO NA APOSTILA: Conversão preventiva para .toString() no split para evitar quebras se o valor for numérico puro
+    }else if (filme.valor == "" || filme.valor == null || filme.valor == undefined || filme.valor.toString().split('.')[0].length > 3 || isNaN( filme.valor) ){
        message.ERROR_BAD_REQUEST.field = "[VALOR] invalido"
        return message.ERROR_BAD_REQUEST
        
-   //VALIDA CAPA
+    //VALIDA CAPA
     } else if (filme.capa == null || filme.capa == undefined || filme.capa.length > 255) {
         message.ERROR_BAD_REQUEST.field = "[CAPA] invalido"
-        return message.ERROR_BAD_REQUEST
-
-
+        return message.ERROR_BAD_REQUEST    
+    
+    }else if(filme.id_classificacao == undefined || filme.id_classificacao == "" || filme.id_classificacao == null || isNaN(filme.id_classificacao) || filme.id_classificacao <=0){
+        message.ERROR_BAD_REQUEST.field = "ID invalido"
+        return message.ERROR_BAD_REQUEST //400
     }else{   
         return false 
     } 
@@ -90,7 +96,7 @@ const inserirNovoFilme = async function (filme,contentType) {
             }
         }else{
             return message.ERROR_CONTENT_TYPE
-        }//415
+        } //415
             
     }catch (error) {
         console.error("Erro no Controller:", error)
@@ -154,6 +160,23 @@ const listarFilme = async function(){
         //Validação para verificar se existe conteúdo do array
         if(result){
             if(result.length > 0){
+
+                // Percorre o ARRAY de filmes para identificar os dados da classificação
+                // Adicionado 'let' no escopo do loop para evitar vazamento de memória e conflito global
+                for(let filme of result){
+                    // Busca na controller da classificação o id referente aos dados
+                    let resultClassificacao = await controller_classificacao.buscarClassificacao(filme.id_classificacao)
+                    // Se a classificação foi encontrada
+                    if(resultClassificacao.status){
+                        // Cria o atributo classificação no filme e adiciona os dados referente a classificação
+                        // Adicionado o operador '||' de fallback preventivo para aceitar tanto estruturas com .classificacao quanto diretas (.response)
+                        filme.classificacao = resultClassificacao.response.classificacao || resultClassificacao.response
+                        // Apaga o atributo id_classificação do filme para não ficar repetido
+                        delete filme.id_classificacao
+                    }
+                }
+            
+
                 message.DEFAULT_MESSAGE.status = message.SUCCESS_RESPONSE.status
                 message.DEFAULT_MESSAGE.status_code = message.SUCCESS_RESPONSE.status_code
                 message.DEFAULT_MESSAGE.response.count = result.length
@@ -183,6 +206,21 @@ const buscarFilme = async function(id) {
 
             if (result) {
                 if (result.length > 0) {
+
+                    // Percorre o ARRAY de filmes para identificar os dados da classificação
+                for(let filme of result){
+                    // Busca na controller da classificação o id referente aos dados
+                    let resultClassificacao = await controller_classificacao.buscarClassificacao(filme.id_classificacao)
+                    // Se a classificação foi encontrada
+                    if(resultClassificacao.status){
+                        // Cria o atributo classificação no filme e adiciona os dados referente a classificação
+                        // Adicionado o fallback preventivo '||' para compatibilidade de rotas
+                        filme.classificacao = resultClassificacao.response.classificacao || resultClassificacao.response
+                        // Apaga o atributo id_classificação do filme para não ficar repetido
+                        delete filme.id_classificacao
+                    }
+                }
+            
                     message.DEFAULT_MESSAGE.status = message.SUCCESS_RESPONSE.status
                     message.DEFAULT_MESSAGE.status_code = message.SUCCESS_RESPONSE.status_code
                     message.DEFAULT_MESSAGE.response.filme = result
@@ -238,5 +276,6 @@ const buscarFilme = async function(id) {
         listarFilme, 
         buscarFilme,
         excluirFilme,
-        atualizarFilme
+        atualizarFilme,
+        controller_classificacao
     }

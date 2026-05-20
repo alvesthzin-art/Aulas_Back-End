@@ -126,6 +126,14 @@ app.get('/v1/senai/locadora/classificacao', async function(request, response){
     response.status(result.status_code).json(result)
 })
 
+// BUSCAR PELO ID
+app.get('/v1/senai/locadora/classificacao/:id', async function(request, response) {
+    let idClassificacao = request.params.id
+    let result = await controllerClassificacao.buscarClassificacao(idClassificacao)
+    
+    response.status(result.status_code).json(result)
+})
+
 // POST Classificação
 app.post('/v1/senai/locadora/classificacao', bodyParserJSON, async (request, response) => {
     let dados = request.body

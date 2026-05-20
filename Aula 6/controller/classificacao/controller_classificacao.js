@@ -32,4 +32,24 @@ const listarClassificacoes = async function(){
     } else { return message.ERROR_NOT_FOUND }
 }
 
-module.exports = { inserirNovaClassificacao, listarClassificacoes }
+const buscarClassificacao = async function(id) {
+    let message = JSON.parse(JSON.stringify(config_message))
+    
+    if (id == "" || id == undefined || isNaN(id)) {
+        return message.ERROR_BAD_REQUEST // 400
+    } else {
+        let result = await classificacaoDAO.selectByIdClassificacao(id) 
+        
+        if (result) {            
+            message.DEFAULT_MESSAGE.status = true 
+            message.DEFAULT_MESSAGE.status_code = 200
+            message.DEFAULT_MESSAGE.response = { classificacao: result } 
+            
+            return message.DEFAULT_MESSAGE
+        } else {
+            return message.ERROR_NOT_FOUND // 404
+        }
+    }
+}
+
+module.exports = { inserirNovaClassificacao, listarClassificacoes, buscarClassificacao }

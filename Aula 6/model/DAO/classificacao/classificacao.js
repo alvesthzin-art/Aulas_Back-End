@@ -22,4 +22,21 @@ const selectAllClassificacao = async function(){
     } catch (error){ return false }
 }
 
-module.exports = { insertClassificacao, selectAllClassificacao }
+const selectByIdClassificacao = async function(id) {
+    try {
+        let sql = `select * from tbl_classificacao where id = ${id}`
+        let result = await knexConex.raw(sql)
+        
+        if (result && result[0].length > 0) {
+            return result[0]; // Retorna a classificação encontrada
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+
+module.exports = { insertClassificacao, selectAllClassificacao, selectByIdClassificacao }
