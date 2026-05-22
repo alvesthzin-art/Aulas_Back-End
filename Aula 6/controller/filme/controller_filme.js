@@ -241,6 +241,13 @@ const buscarFilme = async function(id) {
                         // Apaga o atributo id_classificação do filme para não ficar repetido
                         delete filme.id_classificacao
                     }
+
+                    //Cria o objeto de Generos relacionados ao Filme
+                    let resultGenero = await controller_filme_genero.buscarGeneroIdFilme(filme.id)
+                    if(resultGenero.status){
+                        filme.genero = resultGenero.response.filme_genero
+                    }
+
                 }
             
                     message.DEFAULT_MESSAGE.status = message.SUCCESS_RESPONSE.status
