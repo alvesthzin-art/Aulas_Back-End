@@ -12,6 +12,9 @@ const controllerSexo = require('./controller/sexo/controller_sexo.js')
 //Import da tabela de genero
 const controllerGenero = require("./controller/genero/controller_genero.js")
 
+// IMPORT ADICIONADO: Controller da tabela intermediária filme_genero
+const controllerFilmeGenero = require('./controller/filme/controller_filme_genero.js')
+
 //Import da tabela de classificação
 const controllerClassificacao = require('./controller/classificacao/controller_classificacao.js')
 
@@ -26,9 +29,9 @@ const app = express()
 
 //Conjunto de permissões a serem aplicadas no CORS da API
 const corsOptions = {
-    origin: "*", //A origem da requisição, podendo ser um IP ou *(Todos)
-    methods: "GET, POST, PUT, DELETE, OPTIONS", //São os verbos que serão liberados na API
-    allowedHeaders: ["Content-type", "Authorization"] //São permissões de cabeçalho do CORS
+    origin: "*", 
+    methods: "GET, POST, PUT, DELETE, OPTIONS", 
+    allowedHeaders: ["Content-type", "Authorization"] 
 }
 
 //Configura as permissões da API através do CORS
@@ -39,9 +42,8 @@ app.use(cors(corsOptions))
 //ENDPOINTS
 // Rota para inserir um novo filme
 app.post('/v1/senai/locadora/filme', bodyParserJSON, async (request, response) => {
-    // recebe o conteudo dentro do body da requisição
     let dados = request.body
-    let conteType = request.headers['content-type']// linha adicionada para receber o content-type do header da requisição
+    let conteType = request.headers['content-type']
 
     let result = await controllerFilme.inserirNovoFilme(dados,conteType)
     
@@ -57,7 +59,6 @@ app.get('/v1/senai/locadora/filme', async function(request, response){
 })
 
 app.get("/v1/senai/locadora/filme/:id", async function(request, response){
-    //Recebe o id via parametro
     let id = request.params.id
 
     let result = await controllerFilme.buscarFilme(id)
@@ -67,22 +68,16 @@ app.get("/v1/senai/locadora/filme/:id", async function(request, response){
 })
 
 app.put('/v1/senai/locadora/filme/:id', bodyParserJSON, async function(request, response){
-    //Recebe o contenty type da requisição
     let contentType = request.headers['content-type']
-    //Recebe o ID do registro a ser atualizado
     let id = request.params.id
-    //Recebe os dados enviados no corpo da requisição
     let dados = request.body
 
-    //Chama a função de atualizar na controller e encaminha os dados, id e content-type
-    //obedecendo a ordem de criação na função da controller
     let result = await controllerFilme.atualizarFilme(dados, id, contentType)
 
     response.status(result.status_code)
     response.json(result)
 })
 
-//Endpoint para deletar um filme pelo ID
 app.delete('/v1/senai/locadora/filme/:id', async function(request, response){
     let id = request.params.id
 
@@ -112,11 +107,19 @@ app.get('/v1/senai/locadora/genero', async function(request, response){
     response.status(result.status_code).json(result)
 })
 
-// POST Gênero
+// POST Gênero (CORRIGIDO: Agora chamando inserirNovoGenero)
 app.post('/v1/senai/locadora/genero', bodyParserJSON, async (request, response) => {
     let dados = request.body
     let contentType = request.headers['content-type']
     let result = await controllerGenero.inserirNovoGenero(dados, contentType)
+    response.status(result.status_code).json(result)
+})
+
+// ENDPOINT: POST para fazer o vínculo na tabela intermediária filme_genero
+app.post('/v1/senai/locadora/filme-genero', bodyParserJSON, async (request, response) => {
+    let dados = request.body
+    let contentType = request.headers['content-type']
+    let result = await controllerFilmeGenero.inserirFilmeGenero(dados, contentType)
     response.status(result.status_code).json(result)
 })
 
@@ -155,10 +158,9 @@ app.post('/v1/senai/locadora/ator', bodyParserJSON, async (request, response) =>
     let dados = request.body
     let contentType = request.headers['content-type']
     let result = await controllerAtor.inserirNovoAtor(dados, contentType)
-    response.status(result.status_code).json(result)
+    response.status(result.status_code)
+    response.json(result)
 })
-
-
 
 //Serve para inicializar a API para receber requisições
 app.listen(8080, function(){

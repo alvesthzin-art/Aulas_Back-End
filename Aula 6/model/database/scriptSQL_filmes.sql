@@ -41,8 +41,34 @@ select * from tbl_filme order by id desc;
 
 delete from tbl_filme where id > 0;
 
-update tbl_filme set nome = 'filme01'
+update tbl_filme set 
+	nome = 'filme02',
+    data_lancamento = '2000-01-01',
+    duracao = '02:00',
+    sinopse = 'Testando o update no banco de dados',
+    avaliacao = '2',
+    valor = '10',
+    capa = 'Teste capa'
 	where id = 6;
+    
+select * from tbl_classificacao;
+
+insert into tbl_classificacao (
+								sigla,
+                                nome,
+                                caracteristicas)
+values (
+								'18',
+								'Não recomendado para menores de 18 anos',
+                                'conteúdo exclusivamente destinado a adultos, sendo possível veicular apologia à violência e crueldade, sexo explícito.');                                
+    
+    
+    
+    
+    
+    
+    
+    
 
 
                             

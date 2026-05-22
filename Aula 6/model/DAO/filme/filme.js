@@ -1,6 +1,6 @@
 /************************************************************************************************************
  * Objetivo: Arquivo responsável pelo CRUD no banco de dados MySQL na tabela
- *           Filme
+ * Filme
  * Data: 15/04/2026
  * Autor: Thiago
  * Versão: 1.0

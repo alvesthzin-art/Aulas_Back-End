@@ -29,6 +29,12 @@ const SUCCESS_CREATED_ITEM = {
     status_code: 201,
     message: 'Registro inserido com sucesso.'
 }
+//Mensagem de sucesso para insert, para manter o código mais organizado e facilitar a manutenção
+const SUCCESS_CREATED_ITEM_WARNING = {
+    status: true,
+    status_code: 201,
+    message: 'Os dados principais foram inseridos com sucesso, porém alguns dados apresentaram problema.'
+}
 
 const SUCCESS_RESPONSE = {
     status: true,
@@ -88,5 +94,6 @@ module.exports = {
     ERROR_NOT_FOUND,
     SUCCESS_RESPONSE,
     SUCCESS_UPDATED_ITEM,
-    SUCCESS_DELETED_ITEM
+    SUCCESS_DELETED_ITEM,
+    SUCCESS_CREATED_ITEM_WARNING
 }

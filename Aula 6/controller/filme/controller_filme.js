@@ -13,6 +13,8 @@ const config_message = require('../modulo/configMessages.js')
 const filmeDAO = require('../../model/DAO/filme/filme.js')
 
 const controller_classificacao = require('../classificacao/controller_classificacao.js')
+const controller_filme_genero = require('./controller_filme_genero.js')
+
 
 //Função para validar os dados do filme, garantindo que os dados estejam corretos antes de serem processados pelo model
 async function validarDados(filme) {
@@ -40,7 +42,7 @@ async function validarDados(filme) {
        return message.ERROR_BAD_REQUEST
 
     //VALIDA AVALIACAO
-    // ADICIONADO NA APOSTILA: Conversão preventiva para .toString() para evitar erros caso a avaliação venha como número puro do banco/Postman
+    //Conversão preventiva para .toString() para evitar erros caso a avaliação venha como número puro do banco/Postman
     }else if(isNaN(filme.avaliacao) || (filme.avaliacao && filme.avaliacao.toString().length > 3) ){
        message.ERROR_BAD_REQUEST.field = "[AVALIACAO] invalido"
        return message.ERROR_BAD_REQUEST
@@ -74,25 +76,38 @@ const inserirNovoFilme = async function (filme,contentType) {
 
         if(String(contentType).toLocaleLowerCase()== 'application/json') {
             
-        
             let validar = await validarDados(filme)
 
             //se validar retorna algo significa que é json de erro e ja sera retornado 
             if(validar){
                 return validar
             }else{
-                // manda os filmes para o DAO
+                // Primeiro insere o filme no banco para gerar o ID necessário
                 let result = await filmeDAO.insertFilme(filme)
+                
                 if (result) {
+                    // Se o filme inseriu com sucesso, percorre e vincula os gêneros usando o ID gerado (result)
+                    if (filme.genero && Array.isArray(filme.genero)) {
+                        for (let genero of filme.genero) {
+                            let generoDoFilme = {   
+                                'id_filme': result, 
+                                'id_genero': genero.id
+                            }
+                        }
+                            await controller_filme_genero.inserirFilmeGenero(generoDoFilme, contentType)
+
+                            if(!resultInsertGenero.status){
+                                return message.SUCCESS_CREATED_ITEM_WARNING //201 com alerta de dados não inseridos
+                            }
+                    }
+
                     message.DEFAULT_MESSAGE.status = true
                     message.DEFAULT_MESSAGE.status_code = message.SUCCESS_CREATED_ITEM.status_code
                     message.DEFAULT_MESSAGE.message = message.SUCCESS_CREATED_ITEM.message
-                  
+                    return message.DEFAULT_MESSAGE
                 }else{
                     return message.ERROR_INTERNAL_SERVER_MODEL//erro 500
-                    
                 }
-                return message.DEFAULT_MESSAGE
             }
         }else{
             return message.ERROR_CONTENT_TYPE
@@ -174,6 +189,13 @@ const listarFilme = async function(){
                         // Apaga o atributo id_classificação do filme para não ficar repetido
                         delete filme.id_classificacao
                     }
+
+                    //Cria o objeto de Generos relacionados ao Filme
+                    let resultGenero = await controller_filme_genero.buscarGeneroIdFilme(filme.id)
+                    if(resultGenero.status){
+                        filme.genero = resultGenero.response.filme_genero
+                    }
+
                 }
             
 
@@ -240,7 +262,7 @@ const buscarFilme = async function(id) {
 }
     
     // Função para excluir um filme
-    const excluirFilme = async function(id){
+const excluirFilme = async function(id){
 
         //criando clone  do objeto json para manipular a estrutura local sem modificar o original
             let message = JSON.parse(JSON.stringify(config_message))
