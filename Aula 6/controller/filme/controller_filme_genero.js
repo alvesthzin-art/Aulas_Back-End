@@ -10,7 +10,7 @@
 const config_message = require('../modulo/configMessages.js')
 
 // Import do arquivo DAO para fazer o CRUD do relacionamento no banco de dados
-const filmeGeneroDAO = require('../../model/DAO/filme/filme_genero.js')
+const filmeGeneroDAO = require('../../model/DAO/filme_genero/filme_genero.js')
 
 // Função para validar os IDs antes de processar no banco de dados
 async function validarRelacionamento(dados) {
@@ -157,10 +157,31 @@ const excluirFilmeGenero = async function(idFilme, idGenero){
     }
 }
 
+// Função para excluir os gêneros relacionados com o filme
+const excluirGenerosIdFilme = async function(idFilme, idGenero){
+    let message = JSON.parse(JSON.stringify(config_message))
+    
+    try {
+        // Executa a remoção do registro na tabela intermediária por meio do DAO
+        let result = await filmeGeneroDAO.deleteFilmeGenero(idFilme)
+
+        if (result) {
+            return message.SUCCESS_DELETED_ITEM // 200 Sucesso
+         } else {
+            return message.ERROR_INTERNAL_SERVER_MODEL // 500 Erro no banco
+        }
+        
+    } catch (error) {
+        console.error("Erro no Controller Filme Gênero:", error)
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER // 500 Erro de lógica
+    }
+}
+
 module.exports = {
     inserirFilmeGenero,
     listarGenerosPorFilme,
     buscarFilmeGenero, 
     excluirFilmeGenero,
-    validarRelacionamento
+    validarRelacionamento,
+    excluirGenerosIdFilme
 }

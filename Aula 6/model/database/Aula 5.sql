@@ -87,4 +87,5 @@ select * from tbl_filme_genero where id_filme in (
 													select tbl_filme.id from tbl_filme
                                                 );    
 
-
+select * from tbl_filme_genero;
+delete from tbl_filme_genero;

@@ -138,6 +138,15 @@ const atualizarFilme = async function(filme, id, contentType){
                     let result = await filmeDAO.updateFilme(filme)
 
                     if(result){
+
+                        // Manipulação de dados na tabela de relação entre filme e gênero
+                        let resultDeleteGenero = await controller_filme_genero.excluirGenerosIdFilme(filme.id)
+
+                        // Após a exclusão de todos os generos relacionados com o filme
+                        if(resultDeleteGenero.status){
+                            
+                        }
+
                         message.DEFAULT_MESSAGE.status = message.SUCCESS_UPDATED_ITEM.status
                         message.DEFAULT_MESSAGE.status_code = message.SUCCESS_UPDATED_ITEM.status_code
                         message.DEFAULT_MESSAGE.message = message.SUCCESS_UPDATED_ITEM.message
@@ -268,7 +277,7 @@ const buscarFilme = async function(id) {
     }
 }
     
-    // Função para excluir um filme
+// Função para excluir um filme
 const excluirFilme = async function(id){
 
         //criando clone  do objeto json para manipular a estrutura local sem modificar o original
